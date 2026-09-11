@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SentimentScope | Text Sentiment Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">NLP • TextBlob • Flask</p>
+      <h1>Sentiment<span>Scope</span></h1>
+      <p class="subtitle">Analyze the emotion and subjectivity hidden inside any sentence.</p>
+    </section>
+
+    <section class="card">
+      <form method="POST" id="sentimentForm">
+        <div class="label-row">
+          <label for="text">Enter your text</label>
+          <span id="counter">0 characters</span>
+        </div>
+        <textarea id="text" name="text" maxlength="2000" placeholder="Example: I really enjoyed this product. It is simple, fast, and useful!" required>{{ text }}</textarea>
+        <div class="actions">
+          <button type="button" class="secondary" id="clearBtn">Clear</button>
+          <button type="submit">Analyze Sentiment →</button>
+        </div>
+      </form>
+    </section>
+
+    {% if result %}
+    <section class="result-card">
+      <div class="result-header">
+        <div>
+          <p class="eyebrow">Analysis Result</p>
+          <h2>{{ result.emoji }} {{ result.label }}</h2>
+        </div>
+        <div class="badge {{ result.label|lower }}">{{ result.label }}</div>
+      </div>
+
+      <div class="metrics">
+        <article class="metric">
+          <span>Polarity</span>
+          <strong>{{ result.polarity }}</strong>
+          <small>Negative −1 ← → Positive +1</small>
+          <div class="bar"><span style="width: {{ ((result.polarity + 1) / 2 * 100)|round }}%"></span></div>
+        </article>
+        <article class="metric">
+          <span>Subjectivity</span>
+          <strong>{{ result.subjectivity }}</strong>
+          <small>Objective 0 ← → Subjective 1</small>
+          <div class="bar"><span style="width: {{ (result.subjectivity * 100)|round }}%"></span></div>
+        </article>
+      </div>
+
+      <div class="explain">
+        <strong>What does this mean?</strong>
+        <p>Polarity measures emotional direction, while subjectivity estimates how opinion-based the text is.</p>
+      </div>
+    </section>
+    {% endif %}
+
+    <footer>Built with Python, Flask & TextBlob</footer>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
